@@ -13,17 +13,8 @@ GameView.prototype.start = function() {
   this.lastTime = 0;
   document.addEventListener("keydown", keyDownHandler.bind(this), false);
   document.addEventListener("keyup", keyUpHandler.bind(this), false);
-  var platforms = this.game.platforms;
-  for (var i = 0; i < platforms.length; i++) {
-    platforms[i].draw();
-  }
 
   this.game.initialize();
-
-  // setInterval(function (){
-  //   this.game.step();
-  //   this.game.draw(this.ctx);
-  // }.bind(this), 20);
   this.animate(this.animate.bind(this));
 };
 

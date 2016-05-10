@@ -29,7 +29,7 @@ Game.prototype.rerenderPlatforms = function() {
     if (this.kangaroo.y < this.DIM_Y/2) {
       if (this.kangaroo.vel[1] > 0) {
         platforms[i].y += this.kangaroo.vel[1];
-        // this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
+
       }
     }
   }
@@ -37,28 +37,28 @@ Game.prototype.rerenderPlatforms = function() {
 
 Game.prototype.initialize = function() {
   this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(0, 100)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-50, 0)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-100, -50)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-200, -100)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-300, -200)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(100, 200)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(200, 300)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(100, 500)}));
-  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(500, 600)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(0, 100)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(-200, -100)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(-300, -200)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 200)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(200, 300)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(300, 400)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 500)}));
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(500, 600)}));
 };
 
 Game.prototype.addPlatform = function() {
-  var x = randomInt(5, 480);
-  var y = randomInt(100, 200);
+  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(0, 100)}));
+  // this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(-50, 0)}));
+  // this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 200)}));
+  // this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(200, 300)}));
 };
 
 Game.prototype.checkCollisions = function() {
   var platforms = this.platforms;
   for (var i = 0; i < platforms.length; i++) {
     if (this.kangaroo.isCollided(platforms[i]) ) {
-      this.kangaroo.vel[1] = 18;
+      this.kangaroo.vel[1] = 13;
       this.kangaroo.jump();
       this.resetCollisions();
     }
@@ -79,11 +79,18 @@ Game.prototype.step = function() {
   // this.initialize();
   this.rerenderPlatforms();
   this.kangaroo.jump();
-  this.kangaroo.vel[1] -= 1;
+  this.kangaroo.vel[1] -= 0.5;
   if (this.kangaroo.vel[1] <= 0) {
     this.kangaroo.falling = true;
   }
   this.checkCollisions();
+  var platforms = this.platforms;
+  for (var i = 0; i < platforms.length; i++) {
+    if (platforms[i].y > 600) {
+      this.platforms.splice(i, 1);
+      this.addPlatform();
+    }
+  }
   // console.log(this.checkCollisions());
 };
 

@@ -1,7 +1,7 @@
 var Kangaroo = function(args) {
   this.x = args.x;
   this.y = args.y;
-  this.vel = args.vel || [0, 18];
+  this.vel = args.vel || [0, 13];
   // this.width = 25;
   // this.height = 25;
   this.radius = 10;
