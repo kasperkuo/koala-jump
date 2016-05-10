@@ -24,12 +24,24 @@ Kangaroo.prototype.jump = function() {
   this.y -= this.vel[1];
 
 
-  if (this.x > 500) {
-    this.x = -25;
+  if (this.x >= 500) {
+    this.x = 0;
   } else if (this.x < 0) {
     this.x = 500;
   }
   //can alter y velocity for power ups later;
+};
+
+Kangaroo.prototype.move = function(direction, move) {
+  if (direction === "left") {
+    move[0] -= 5 ;
+  } else {
+    move[0] += 5;
+  }
+
+  console.log(move[0]);
+
+  this.x += move[0];
 };
 
 Kangaroo.prototype.isCollided = function(otherObject) {
