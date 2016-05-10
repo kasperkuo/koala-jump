@@ -4,7 +4,7 @@ var Kangaroo = function(args) {
   this.vel = args.vel || [0, 18];
   // this.width = 25;
   // this.height = 25;
-  this.radius = 5;
+  this.radius = 10;
   this.dead = false;
   this.game = args.game;
   this.falling = false;
@@ -32,16 +32,24 @@ Kangaroo.prototype.jump = function() {
   //can alter y velocity for power ups later;
 };
 
-Kangaroo.prototype.move = function(direction, move) {
+Kangaroo.prototype.move = function(direction) {
+  this.vel[0] = 0;
   if (direction === "left") {
-    move[0] -= 5 ;
+    if ( this.vel[0] > -20 ){
+      this.x -= this.vel[0] ;
+      this.vel[0] -= 8;
+    }
+  } else if (direction === "right") {
+    if (this.vel[0] < 20) {
+      this.x += this.vel[0];
+      this.vel[0] += 8;
+      console.log(this.vel[0]);
+    }
   } else {
-    move[0] += 5;
+    this.vel[0] = 0;
+    this.x;
+
   }
-
-  console.log(move[0]);
-
-  this.x += move[0];
 };
 
 Kangaroo.prototype.isCollided = function(otherObject) {

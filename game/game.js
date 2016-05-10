@@ -23,9 +23,25 @@ Game.prototype.draw = function(ctx) {
   }
 };
 
+Game.prototype.rerenderPlatforms = function() {
+  var platforms = this.platforms;
+  for (var i = 0; i < platforms.length; i++) {
+    if (this.kangaroo.y < this.DIM_Y/2) {
+      if (this.kangaroo.vel[1] > 0) {
+        platforms[i].y += this.kangaroo.vel[1];
+        // this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
+      }
+    }
+  }
+};
+
 Game.prototype.initialize = function() {
   this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
   this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(0, 100)}));
+  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-50, 0)}));
+  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-100, -50)}));
+  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-200, -100)}));
+  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-300, -200)}));
   this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(100, 200)}));
   this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(200, 300)}));
   this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
@@ -61,6 +77,7 @@ Game.prototype.resetCollisions = function() {
 
 Game.prototype.step = function() {
   // this.initialize();
+  this.rerenderPlatforms();
   this.kangaroo.jump();
   this.kangaroo.vel[1] -= 1;
   if (this.kangaroo.vel[1] <= 0) {

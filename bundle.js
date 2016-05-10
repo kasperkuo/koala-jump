@@ -90,9 +90,25 @@
 	  }
 	};
 
+	Game.prototype.rerenderPlatforms = function() {
+	  var platforms = this.platforms;
+	  for (var i = 0; i < platforms.length; i++) {
+	    if (this.kangaroo.y < this.DIM_Y/2) {
+	      if (this.kangaroo.vel[1] > 0) {
+	        platforms[i].y += this.kangaroo.vel[1];
+	        // this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
+	      }
+	    }
+	  }
+	};
+
 	Game.prototype.initialize = function() {
 	  this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
 	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(0, 100)}));
+	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-50, 0)}));
+	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-100, -50)}));
+	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-200, -100)}));
+	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(-300, -200)}));
 	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(100, 200)}));
 	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(200, 300)}));
 	  this.platforms.push(new Platform({x: randomInt(5, 480), y:randomInt(300, 400)}));
@@ -128,6 +144,7 @@
 
 	Game.prototype.step = function() {
 	  // this.initialize();
+	  this.rerenderPlatforms();
 	  this.kangaroo.jump();
 	  this.kangaroo.vel[1] -= 1;
 	  if (this.kangaroo.vel[1] <= 0) {
@@ -153,7 +170,7 @@
 	  this.vel = args.vel || [0, 18];
 	  // this.width = 25;
 	  // this.height = 25;
-	  this.radius = 5;
+	  this.radius = 10;
 	  this.dead = false;
 	  this.game = args.game;
 	  this.falling = false;
@@ -181,16 +198,24 @@
 	  //can alter y velocity for power ups later;
 	};
 
-	Kangaroo.prototype.move = function(direction, move) {
+	Kangaroo.prototype.move = function(direction) {
+	  this.vel[0] = 0;
 	  if (direction === "left") {
-	    move[0] -= 5 ;
+	    if ( this.vel[0] > -20 ){
+	      this.x -= this.vel[0] ;
+	      this.vel[0] -= 8;
+	    }
+	  } else if (direction === "right") {
+	    if (this.vel[0] < 20) {
+	      this.x += this.vel[0];
+	      this.vel[0] += 8;
+	      console.log(this.vel[0]);
+	    }
 	  } else {
-	    move[0] += 5;
+	    this.vel[0] = 0;
+	    this.x;
+
 	  }
-
-	  console.log(move[0]);
-
-	  this.x += move[0];
 	};
 
 	Kangaroo.prototype.isCollided = function(otherObject) {
@@ -216,8 +241,8 @@
 	var Platform = function(args) {
 	  this.x = args.x;
 	  this.y = args.y;
-	  this.width = 40;
-	  this.height = 8;
+	  this.width = 80;
+	  this.height = 10;
 	  // this.type = args.type; will add different platform types later
 	};
 
@@ -238,16 +263,16 @@
 	function GameView(game, ctx) {
 	  this.game = game;
 	  this.ctx = ctx;
+	  this.keys = {
+	    "LEFT": 37,
+	    "RIGHT": 39
+	  };
 	}
-	//
-
-	GameView.MOVES = {
-	  "left": [ -1, 0],
-	  "right": [ 1,  0]
-	};
 
 	GameView.prototype.start = function() {
-	  this.bindKeyHandlers();
+	  this.lastTime = 0;
+	  document.addEventListener("keydown", keyDownHandler.bind(this), false);
+	  document.addEventListener("keyup", keyUpHandler.bind(this), false);
 	  var platforms = this.game.platforms;
 	  for (var i = 0; i < platforms.length; i++) {
 	    platforms[i].draw();
@@ -255,21 +280,39 @@
 
 	  this.game.initialize();
 
-	  setInterval(function (){
-	    this.game.step();
-	    this.game.draw(this.ctx);
-	  }.bind(this), 20);
+	  // setInterval(function (){
+	  //   this.game.step();
+	  //   this.game.draw(this.ctx);
+	  // }.bind(this), 20);
+	  this.animate(this.animate.bind(this));
 	};
 
-	GameView.prototype.bindKeyHandlers = function () {
-	  var kangaroo = this.game.kangaroo;
-
-	  Object.keys(GameView.MOVES).forEach(function (k) {
-	    var move = GameView.MOVES[k];
-	    key(k, function () { kangaroo.move(k, move); });
-	  });
-
+	var keyDownHandler = function(event) {
+	  if (event.keyCode === this.keys["LEFT"]) {
+	    this.game.kangaroo.move("left");
+	  } else if (event.keyCode === this.keys["RIGHT"]) {
+	    this.game.kangaroo.move("right");
+	  }
 	};
+
+	var keyUpHandler = function(event) {
+	  if (event.keyCode === this.keys["LEFT"]) {
+	    this.game.kangaroo.move("stop");
+	  } else if (event.keyCode === this.keys["RIGHT"]) {
+	    this.game.kangaroo.move("stop");
+	  }
+	};
+
+	GameView.prototype.animate = function(time) {
+	  var timeDelta = time - this.lastTime;
+
+	  this.game.step();
+	  this.game.draw(this.ctx);
+	  this.lastTime = time;
+	  requestAnimationFrame(this.animate.bind(this));
+	};
+
+
 	// GameView.prototype.bindKeyHandlers = function() {
 	//   key('a', function(){ alert('you pressed a!') });
 	// };

@@ -1,8 +1,8 @@
 var Platform = function(args) {
   this.x = args.x;
   this.y = args.y;
-  this.width = 40;
-  this.height = 8;
+  this.width = 80;
+  this.height = 10;
   // this.type = args.type; will add different platform types later
 };
 
