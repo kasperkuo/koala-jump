@@ -1,0 +1,15 @@
+module.exports = {
+  entry: './game/kangaroo_jump.js',
+  output: {
+    path: __dirname,
+    filename: 'bundle.js',
+    module: {
+      loaders: [
+        {
+          test: /\.css$/,
+          loader: 'style!css',
+        },
+      ]
+    }
+  }
+};
