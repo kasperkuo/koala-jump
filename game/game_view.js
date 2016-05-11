@@ -5,15 +5,17 @@ function GameView(game, ctx) {
   this.ctx = ctx;
   this.keys = {
     "LEFT": 37,
-    "RIGHT": 39
+    "RIGHT": 39,
+    "ENTER": 13,
   };
 }
 
 GameView.prototype.start = function() {
   this.lastTime = 0;
-  document.addEventListener("keydown", keyDownHandler.bind(this), false);
-  document.addEventListener("keyup", keyUpHandler.bind(this), false);
+  document.addEventListener("keydown", keyDownHandler.bind(this));
+  document.addEventListener("keyup", keyUpHandler.bind(this));
 
+  this.game.drawBoard(this.ctx);
   this.game.initialize();
   this.animate(this.animate.bind(this));
 };
@@ -23,6 +25,8 @@ var keyDownHandler = function(event) {
     this.game.kangaroo.move("left");
   } else if (event.keyCode === this.keys["RIGHT"]) {
     this.game.kangaroo.move("right");
+  // } else if (event.keyCode === this.keys["ENTER"]) {
+
   }
 };
 

@@ -1,14 +1,19 @@
 var Platform = function(args) {
   this.x = args.x;
   this.y = args.y;
-  this.width = 80;
+  this.width = 60;
   this.height = 10;
-  // this.type = args.type; will add different platform types later
+  this.type = args.type;
 };
 
 Platform.prototype.draw = function(ctx) {
+  ctx.beginPath();
+  // ctx.fillStyle = '#008080';
   ctx.fillRect(this.x, this.y, this.width, this.height);
-  ctx.fillStyle = '#080800';
+  ctx.rect(this.x, this.y, this.width, this.height);
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = "black";
+  ctx.stroke();
 };
 
 module.exports = Platform;

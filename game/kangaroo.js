@@ -15,6 +15,7 @@ Kangaroo.prototype.draw = function(ctx) {
   ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
   ctx.lineWidth = 3;
   ctx.strokeStyle = '#111';
+  ctx.fillStyle = "#111";
   ctx.fill();
 };
 
@@ -43,7 +44,6 @@ Kangaroo.prototype.move = function(direction) {
     if (this.vel[0] < 20) {
       this.x += this.vel[0];
       this.vel[0] += 8;
-      console.log(this.vel[0]);
     }
   } else {
     this.vel[0] = 0;
