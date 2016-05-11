@@ -10,6 +10,5 @@ var GameView = require('./game_view.js');
   var ctx = canvas.getContext("2d");
 
   var gameView = new GameView(game, ctx);
-
   gameView.start();
 }());

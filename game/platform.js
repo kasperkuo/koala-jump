@@ -8,7 +8,7 @@ var Platform = function(args) {
 
 Platform.prototype.draw = function(ctx) {
   ctx.beginPath();
-  // ctx.fillStyle = '#008080';
+  ctx.fillStyle = '#D3FFCE';
   ctx.fillRect(this.x, this.y, this.width, this.height);
   ctx.rect(this.x, this.y, this.width, this.height);
   ctx.lineWidth = 1;

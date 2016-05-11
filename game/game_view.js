@@ -7,6 +7,7 @@ function GameView(game, ctx) {
     "LEFT": 37,
     "RIGHT": 39,
     "ENTER": 13,
+    "SPACE": 32
   };
 }
 
@@ -25,8 +26,11 @@ var keyDownHandler = function(event) {
     this.game.kangaroo.move("left");
   } else if (event.keyCode === this.keys["RIGHT"]) {
     this.game.kangaroo.move("right");
-  // } else if (event.keyCode === this.keys["ENTER"]) {
-
+  } else if (event.keyCode === this.keys["SPACE"]) {
+    if (this.game.gameOver) {
+      this.game = new Game();
+      location.reload();
+    }
   }
 };
 
@@ -39,17 +43,17 @@ var keyUpHandler = function(event) {
 };
 
 GameView.prototype.animate = function(time) {
-  var timeDelta = time - this.lastTime;
+  if (this.game.gameOver) {
+    this.game.endDraw(this.ctx);
+  } else {
+    var timeDelta = time - this.lastTime;
+    this.game.step();
+    this.game.draw(this.ctx);
+    this.lastTime = time;
 
-  this.game.step();
-  this.game.draw(this.ctx);
-  this.lastTime = time;
-  requestAnimationFrame(this.animate.bind(this));
+    requestAnimationFrame(this.animate.bind(this));
+  }
 };
 
-
-// GameView.prototype.bindKeyHandlers = function() {
-//   key('a', function(){ alert('you pressed a!') });
-// };
 
 module.exports = GameView;

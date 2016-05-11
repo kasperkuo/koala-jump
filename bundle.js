@@ -56,7 +56,6 @@
 	  var ctx = canvas.getContext("2d");
 
 	  var gameView = new GameView(game, ctx);
-
 	  gameView.start();
 	}());
 
@@ -77,33 +76,48 @@
 	  this.platforms = [];
 	  this.enemies = [];
 	  this.canCollide = true;
-
-	  this.screenOffset = 0; //determines how much to move the screen up by
+	  this.started = false;
+	  this.gameOver = false;
 	}
 
 	Game.prototype.draw = function(ctx) {
-	  ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-
-	  ctx.font = "24px arial";
-	  ctx.fillText("Score:", 15, 30);
-	  ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
-	  this.kangaroo.draw(ctx);
-
-
-	  var platforms = this.platforms;
-	  for (var i = 0; i < platforms.length; i++) {
-	    platforms[i].draw(ctx);
-	  }
-
-	  if (this.gameOver()) {
+	  if (this.started) {
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-	    ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
 	    ctx.fillStyle = "black";
 	    ctx.font = "24px arial";
-	    ctx.fillText("Game Over", this.DIM_X / 2 - 60, this.DIM_Y / 2 - 50);
-	    ctx.fillText("Your Result:" + this.gameScore, this.DIM_X / 2 - 60, this.DIM_Y / 2 - 30);
-	    ctx.fillText("Click to play again");
+	    ctx.fillText("Score:", 15, 30);
+	    ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
+	    this.kangaroo.draw(ctx);
+
+	    var platforms = this.platforms;
+	    for (var i = 0; i < platforms.length; i++) {
+	      platforms[i].draw(ctx);
+	    }
+
+
+	  } else {
+	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+	    this.kangaroo.draw(ctx);
 	  }
+	};
+
+	Game.prototype.endDraw = function(ctx) {
+	  ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
+	  ctx.fillStyle = "black";
+	  ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
+	  ctx.fillStyle = "white";
+	  ctx.font = "24px arial";
+	  ctx.fillText("Game Over", this.DIM_X / 2 - 60, this.DIM_Y / 2 - 50);
+	  ctx.fillText(
+	    "Your Score:" + Math.floor(this.gameScore / 50),
+	    this.DIM_X / 2 - 60,
+	    this.DIM_Y / 2 - 30
+	  );
+	  ctx.fillText(
+	    "Press space to play again",
+	    this.DIM_X / 2 - 60,
+	    this.DIM_Y / 2 - 10
+	  );
 	};
 
 	Game.prototype.rerenderPlatforms = function() {
@@ -113,57 +127,46 @@
 	      if (this.kangaroo.vel[1] > 0) {
 	        platforms[i].y += this.kangaroo.vel[1];
 	        this.gameScore += this.kangaroo.vel[1];
-	        // this.kangaroo.y = this.kangaroo.y - this.DIM_Y/2;
 	      }
 	    }
 	  }
 	};
 
-	Game.prototype.initialize = function() {
-	  this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(0, 100)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(-200, -100)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(-300, -200)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 200)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(200, 300)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(300, 400)}));
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 500)}));
-	};
 
 	Game.prototype.addPlatform = function() {
-	  this.platforms.push(new Platform({x: randomInt(5, 460), y:randomInt(100, 200)}));
+	  var platforms = this.platforms;
+	  for (var i = 0; i < platforms.length; i++) {
+	    if (platforms[i].y > this.DIM_Y) {
+	      this.platforms.splice(i, 1);
+	      this.platforms.push(
+	        new Platform({x: randomInt(5, 460), y:randomInt(150, 250)})
+	      );
+	    }
+	  }
+
 	};
 
 	Game.prototype.checkCollisions = function() {
 	  var platforms = this.platforms;
 	  for (var i = 0; i < platforms.length; i++) {
 	    if (this.kangaroo.isCollided(platforms[i]) ) {
-	      this.kangaroo.vel[1] = 13;
+	      this.kangaroo.vel[1] = 10;
 	      this.kangaroo.jump();
-	      this.resetCollisions();
 	    }
 	  }
-	};
-
-	Game.prototype.resetCollisions = function() {
-	  this.canCollide = false;
 	};
 
 	Game.prototype.step = function() {
 	  this.rerenderPlatforms();
 	  this.kangaroo.jump();
-	  this.kangaroo.vel[1] -= 0.5;
+	  this.kangaroo.vel[1] -= 0.3;
 	  if (this.kangaroo.vel[1] <= 0) {
 	    this.kangaroo.falling = true;
 	  }
 	  this.checkCollisions();
-	  var platforms = this.platforms;
-	  for (var i = 0; i < platforms.length; i++) {
-	    if (platforms[i].y > this.DIM_Y) {
-	      this.platforms.splice(i, 1);
-	      this.addPlatform();
-	    }
-	  }
+	  this.addPlatform();
+	  this.gameOverChecker();
+
 	};
 
 	function randomInt(min, max) {
@@ -189,12 +192,34 @@
 	};
 
 
-	Game.prototype.gameOver = function() {
+	Game.prototype.gameOverChecker = function() {
 	  if (this.kangaroo.y > this.DIM_Y + 5) {
-	    return true;
-	  } else {
-	    return false;
+	    this.gameOver = true;
 	  }
+	};
+
+	Game.prototype.initialize = function() {
+	  this.gameOver = false;
+	  this.started = true;
+	  this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(0, 100)})
+	  );
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(-200, -100)})
+	  );
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(100, 200)})
+	  );
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(200, 300)})
+	  );
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(300, 400)})
+	  );
+	  this.platforms.push(
+	    new Platform({x: randomInt(5, 460), y:randomInt(100, 500)})
+	  );
 	};
 
 	module.exports = Game;
@@ -207,9 +232,7 @@
 	var Kangaroo = function(args) {
 	  this.x = args.x;
 	  this.y = args.y;
-	  this.vel = args.vel || [0, 13];
-	  // this.width = 25;
-	  // this.height = 25;
+	  this.vel = args.vel || [0, 10];
 	  this.radius = 10;
 	  this.dead = false;
 	  this.game = args.game;
@@ -217,12 +240,8 @@
 	};
 
 	Kangaroo.prototype.draw = function(ctx) {
-	  ctx.beginPath();
-	  ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
-	  ctx.lineWidth = 3;
-	  ctx.strokeStyle = '#111';
-	  ctx.fillStyle = "#111";
-	  ctx.fill();
+	  var koala = document.getElementById("koala");
+	  ctx.drawImage(koala, this.x - 25, this.y -35);
 	};
 
 	Kangaroo.prototype.jump = function() {
@@ -288,7 +307,7 @@
 
 	Platform.prototype.draw = function(ctx) {
 	  ctx.beginPath();
-	  // ctx.fillStyle = '#008080';
+	  ctx.fillStyle = '#D3FFCE';
 	  ctx.fillRect(this.x, this.y, this.width, this.height);
 	  ctx.rect(this.x, this.y, this.width, this.height);
 	  ctx.lineWidth = 1;
@@ -312,6 +331,7 @@
 	    "LEFT": 37,
 	    "RIGHT": 39,
 	    "ENTER": 13,
+	    "SPACE": 32
 	  };
 	}
 
@@ -330,8 +350,11 @@
 	    this.game.kangaroo.move("left");
 	  } else if (event.keyCode === this.keys["RIGHT"]) {
 	    this.game.kangaroo.move("right");
-	  // } else if (event.keyCode === this.keys["ENTER"]) {
-
+	  } else if (event.keyCode === this.keys["SPACE"]) {
+	    if (this.game.gameOver) {
+	      this.game = new Game();
+	      location.reload();
+	    }
 	  }
 	};
 
@@ -344,18 +367,18 @@
 	};
 
 	GameView.prototype.animate = function(time) {
-	  var timeDelta = time - this.lastTime;
+	  if (this.game.gameOver) {
+	    this.game.endDraw(this.ctx);
+	  } else {
+	    var timeDelta = time - this.lastTime;
+	    this.game.step();
+	    this.game.draw(this.ctx);
+	    this.lastTime = time;
 
-	  this.game.step();
-	  this.game.draw(this.ctx);
-	  this.lastTime = time;
-	  requestAnimationFrame(this.animate.bind(this));
+	    requestAnimationFrame(this.animate.bind(this));
+	  }
 	};
 
-
-	// GameView.prototype.bindKeyHandlers = function() {
-	//   key('a', function(){ alert('you pressed a!') });
-	// };
 
 	module.exports = GameView;
 

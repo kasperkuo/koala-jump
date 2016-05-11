@@ -1,9 +1,7 @@
 var Kangaroo = function(args) {
   this.x = args.x;
   this.y = args.y;
-  this.vel = args.vel || [0, 13];
-  // this.width = 25;
-  // this.height = 25;
+  this.vel = args.vel || [0, 10];
   this.radius = 10;
   this.dead = false;
   this.game = args.game;
@@ -11,12 +9,8 @@ var Kangaroo = function(args) {
 };
 
 Kangaroo.prototype.draw = function(ctx) {
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, 10, 0, 2 * Math.PI);
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = '#111';
-  ctx.fillStyle = "#111";
-  ctx.fill();
+  var koala = document.getElementById("koala");
+  ctx.drawImage(koala, this.x - 25, this.y -35);
 };
 
 Kangaroo.prototype.jump = function() {
