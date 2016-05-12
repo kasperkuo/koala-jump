@@ -375,7 +375,6 @@
 	  } else if (event.keyCode === this.keys["RIGHT"]) {
 	    this.game.kangaroo.move("right");
 	  } else if (event.keyCode === this.keys["SPACE"]) {
-	    console.log(this.game.started);
 	    if (this.game.started === false) {
 	      this.game.started = true;
 	    } else {
