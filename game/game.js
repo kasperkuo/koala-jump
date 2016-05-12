@@ -18,7 +18,7 @@ Game.prototype.draw = function(ctx) {
   if (this.started) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     ctx.fillStyle = "black";
-    ctx.font = "24px arial";
+    ctx.font = '24px "Coming Soon"';
     ctx.fillText("Score:", 15, 30);
     ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
     this.kangaroo.draw(ctx);
@@ -32,14 +32,14 @@ Game.prototype.draw = function(ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.kangaroo.draw(ctx);
     ctx.fillStyle = "black";
-    ctx.font = "50px arial";
+    ctx.font = '50px "Coming Soon"';
     ctx.fillText(
       "KOALA JUMP",
       this.DIM_X / 2 - 155,
       this.DIM_Y / 2 - 170
     );
 
-    ctx.font = "24px arial";
+    ctx.font = '24px "Coming Soon"';
     ctx.fillText(
       "Press left and right arrow keys to move",
       this.DIM_X / 2 - 205,
@@ -59,7 +59,7 @@ Game.prototype.endDraw = function(ctx) {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
   ctx.fillStyle = "white";
-  ctx.font = "24px arial";
+  ctx.font = '24px "Coming Soon"';
   ctx.fillText("Game Over", this.DIM_X / 2 - 60, this.DIM_Y / 2 - 50);
   ctx.fillText(
     "Your Score:" + Math.floor(this.gameScore / 50),

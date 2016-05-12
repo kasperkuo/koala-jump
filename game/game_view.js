@@ -27,12 +27,14 @@ var keyDownHandler = function(event) {
   } else if (event.keyCode === this.keys["RIGHT"]) {
     this.game.kangaroo.move("right");
   } else if (event.keyCode === this.keys["SPACE"]) {
+    console.log(this.game.started);
     if (this.game.started === false) {
       this.game.started = true;
     } else {
       if (this.game.gameOver) {
         this.game = new Game();
         location.reload();
+        // this.game.started = false;
       }
     }
   }
