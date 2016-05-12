@@ -16,7 +16,6 @@ GameView.prototype.start = function() {
   document.addEventListener("keydown", keyDownHandler.bind(this));
   document.addEventListener("keyup", keyUpHandler.bind(this));
 
-  this.game.drawBoard(this.ctx);
   this.game.initialize();
   this.animate(this.animate.bind(this));
 };

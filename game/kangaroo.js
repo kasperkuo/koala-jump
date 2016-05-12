@@ -10,7 +10,7 @@ var Kangaroo = function(args) {
 
 Kangaroo.prototype.draw = function(ctx) {
   var koala = document.getElementById("koala");
-  ctx.drawImage(koala, this.x - 25, this.y -35);
+  ctx.drawImage(koala, this.x - 30, this.y -35);
 };
 
 Kangaroo.prototype.jump = function() {

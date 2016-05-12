@@ -27,6 +27,7 @@ Game.prototype.draw = function(ctx) {
       platforms[i].draw(ctx);
     }
 
+    this.drawBoard(ctx);
 
   } else {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
@@ -42,14 +43,37 @@ Game.prototype.draw = function(ctx) {
     ctx.font = '24px "Coming Soon"';
     ctx.fillText(
       "Press left and right arrow keys to move",
-      this.DIM_X / 2 - 205,
+      this.DIM_X / 2 - 220,
       this.DIM_Y / 2 - 30
     );
 
+    ctx.font = '14px "Coming Soon"';
+    ctx.fillStyle = "red";
+    ctx.fillText(
+      "Be careful of going into trees as it can hinder your sight!",
+      this.DIM_X / 2 - 190,
+      this.DIM_Y / 2 + 10
+    );
+
+    ctx.fillText(
+      "Koalas are lazy--if you slow down Mr. Koala will get stuck!",
+      this.DIM_X / 2 - 190,
+      this.DIM_Y / 2 + 33
+    );
+
+
+    // ctx.fillText(
+    //   "Be careful of going into trees and slowing down!",
+    //   this.DIM_X / 2 - 230,
+    //   this.DIM_Y / 2 + 10
+    // );
+
+    ctx.font = '24px "Coming Soon"';
+    ctx.fillStyle = "black";
     ctx.fillText(
       "Press space bar to start",
       this.DIM_X / 2 - 130,
-      this.DIM_Y / 2 + 40
+      this.DIM_Y / 2 + 100
     );
   }
 };
@@ -129,8 +153,10 @@ function randomInt(min, max) {
 }
 
 Game.prototype.drawBoard = function(ctx) {
-  var instructions = document.getElementById("instructions");
-
+  if (this.started) {
+    var treetop = document.getElementById("treetop");
+    ctx.drawImage(treetop, 0, -50);
+  }
 };
 
 

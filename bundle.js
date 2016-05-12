@@ -93,6 +93,7 @@
 	      platforms[i].draw(ctx);
 	    }
 
+	    this.drawBoard(ctx);
 
 	  } else {
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
@@ -108,14 +109,37 @@
 	    ctx.font = '24px "Coming Soon"';
 	    ctx.fillText(
 	      "Press left and right arrow keys to move",
-	      this.DIM_X / 2 - 205,
+	      this.DIM_X / 2 - 220,
 	      this.DIM_Y / 2 - 30
 	    );
 
+	    ctx.font = '14px "Coming Soon"';
+	    ctx.fillStyle = "red";
+	    ctx.fillText(
+	      "Be careful of going into trees as it can hinder your sight!",
+	      this.DIM_X / 2 - 190,
+	      this.DIM_Y / 2 + 10
+	    );
+
+	    ctx.fillText(
+	      "Koalas are lazy--if you slow down Mr. Koala will get stuck!",
+	      this.DIM_X / 2 - 190,
+	      this.DIM_Y / 2 + 33
+	    );
+
+
+	    // ctx.fillText(
+	    //   "Be careful of going into trees and slowing down!",
+	    //   this.DIM_X / 2 - 230,
+	    //   this.DIM_Y / 2 + 10
+	    // );
+
+	    ctx.font = '24px "Coming Soon"';
+	    ctx.fillStyle = "black";
 	    ctx.fillText(
 	      "Press space bar to start",
 	      this.DIM_X / 2 - 130,
-	      this.DIM_Y / 2 + 40
+	      this.DIM_Y / 2 + 100
 	    );
 	  }
 	};
@@ -195,8 +219,10 @@
 	}
 
 	Game.prototype.drawBoard = function(ctx) {
-	  var instructions = document.getElementById("instructions");
-
+	  if (this.started) {
+	    var treetop = document.getElementById("treetop");
+	    ctx.drawImage(treetop, 0, -50);
+	  }
 	};
 
 
@@ -248,7 +274,7 @@
 
 	Kangaroo.prototype.draw = function(ctx) {
 	  var koala = document.getElementById("koala");
-	  ctx.drawImage(koala, this.x - 25, this.y -35);
+	  ctx.drawImage(koala, this.x - 30, this.y -35);
 	};
 
 	Kangaroo.prototype.jump = function() {
@@ -308,18 +334,13 @@
 	  this.x = args.x;
 	  this.y = args.y;
 	  this.width = 60;
-	  this.height = 10;
+	  this.height = 16;
 	  this.type = args.type;
 	};
 
 	Platform.prototype.draw = function(ctx) {
-	  ctx.beginPath();
-	  ctx.fillStyle = '#D3FFCE';
-	  ctx.fillRect(this.x, this.y, this.width, this.height);
-	  ctx.rect(this.x, this.y, this.width, this.height);
-	  ctx.lineWidth = 1;
-	  ctx.strokeStyle = "black";
-	  ctx.stroke();
+	  var platform = document.getElementById("platform");
+	  ctx.drawImage(platform, this.x, this.y);
 	};
 
 	module.exports = Platform;
@@ -347,7 +368,6 @@
 	  document.addEventListener("keydown", keyDownHandler.bind(this));
 	  document.addEventListener("keyup", keyUpHandler.bind(this));
 
-	  this.game.drawBoard(this.ctx);
 	  this.game.initialize();
 	  this.animate(this.animate.bind(this));
 	};
