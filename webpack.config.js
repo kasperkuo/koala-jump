@@ -1,5 +1,5 @@
 module.exports = {
-  entry: './game/kangaroo_jump.js',
+  entry: './lib/koala_jump.js',
   output: {
     path: __dirname,
     filename: 'bundle.js',
