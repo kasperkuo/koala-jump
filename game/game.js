@@ -19,8 +19,6 @@ Game.prototype.draw = function(ctx) {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     ctx.fillStyle = "black";
     ctx.font = '24px "Coming Soon"';
-    ctx.fillText("Score:", 15, 30);
-    ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
     this.kangaroo.draw(ctx);
     var platforms = this.platforms;
     for (var i = 0; i < platforms.length; i++) {
@@ -28,6 +26,8 @@ Game.prototype.draw = function(ctx) {
     }
 
     this.drawBoard(ctx);
+    ctx.fillText("Score:", 15, 30);
+    ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
 
   } else {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);

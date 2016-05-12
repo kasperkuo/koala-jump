@@ -32,7 +32,6 @@ var keyDownHandler = function(event) {
       if (this.game.gameOver) {
         this.game = new Game();
         location.reload();
-        // this.game.started = false;
       }
     }
   }
