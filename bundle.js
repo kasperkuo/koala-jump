@@ -98,11 +98,11 @@
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 	    this.kangaroo.draw(ctx);
 	    ctx.fillStyle = "black";
-	    ctx.font = '50px "Coming Soon"';
+	    ctx.font = '100px "Amatic SC"';
 	    ctx.fillText(
 	      "KOALA JUMP",
 	      this.DIM_X / 2 - 155,
-	      this.DIM_Y / 2 - 170
+	      this.DIM_Y / 2 - 140
 	    );
 
 	    ctx.font = '24px "Coming Soon"';
