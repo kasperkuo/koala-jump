@@ -64,7 +64,7 @@
 /* 1 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var Kangaroo = __webpack_require__(2);
+	var Koala = __webpack_require__(2);
 	var Platform = __webpack_require__(3);
 
 	function Game() {
@@ -72,7 +72,7 @@
 	  this.DIM_Y = 600;
 	  this.gameScore = 0;
 
-	  this.kangaroo = new Kangaroo({ x: this.DIM_X/2, y: 480, game: this});
+	  this.koala = new Koala({ x: this.DIM_X/2, y: 480, game: this});
 	  this.platforms = [];
 	  this.enemies = [];
 	  this.canCollide = true;
@@ -85,7 +85,7 @@
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 	    ctx.fillStyle = "black";
 	    ctx.font = '24px "Coming Soon"';
-	    this.kangaroo.draw(ctx);
+	    this.koala.draw(ctx);
 	    var platforms = this.platforms;
 	    for (var i = 0; i < platforms.length; i++) {
 	      platforms[i].draw(ctx);
@@ -97,7 +97,7 @@
 
 	  } else {
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
-	    this.kangaroo.draw(ctx);
+	    this.koala.draw(ctx);
 	    ctx.fillStyle = "black";
 	    ctx.font = '100px "Amatic SC"';
 	    ctx.fillText(
@@ -113,18 +113,26 @@
 	      this.DIM_Y / 2 - 30
 	    );
 
+	    ctx.font = '16px "Coming Soon"';
+
+	    ctx.fillText(
+	      "Get the highest score you can without falling to the bottom",
+	      this.DIM_X / 2 - 220,
+	      this.DIM_Y / 2
+	    );
+
 	    ctx.font = '14px "Coming Soon"';
 	    ctx.fillStyle = "red";
 	    ctx.fillText(
 	      "Be careful of going into trees as it can hinder your sight!",
 	      this.DIM_X / 2 - 190,
-	      this.DIM_Y / 2 + 10
+	      this.DIM_Y / 2 + 50
 	    );
 
 	    ctx.fillText(
 	      "Koalas are lazy--if you slow down Mr. Koala will get stuck!",
 	      this.DIM_X / 2 - 190,
-	      this.DIM_Y / 2 + 33
+	      this.DIM_Y / 2 + 74
 	    );
 
 
@@ -133,7 +141,7 @@
 	    ctx.fillText(
 	      "Press space bar to start",
 	      this.DIM_X / 2 - 130,
-	      this.DIM_Y / 2 + 100
+	      this.DIM_Y / 2 + 250
 	    );
 	  }
 	};
@@ -164,10 +172,10 @@
 	Game.prototype.rerenderPlatforms = function() {
 	  var platforms = this.platforms;
 	  for (var i = 0; i < platforms.length; i++) {
-	    if (this.kangaroo.y < this.DIM_Y/2) {
-	      if (this.kangaroo.vel[1] > 0) {
-	        platforms[i].y += this.kangaroo.vel[1];
-	        this.gameScore += this.kangaroo.vel[1];
+	    if (this.koala.y < this.DIM_Y/2) {
+	      if (this.koala.vel[1] > 0) {
+	        platforms[i].y += this.koala.vel[1];
+	        this.gameScore += this.koala.vel[1];
 	      }
 	    }
 	  }
@@ -184,15 +192,14 @@
 	      );
 	    }
 	  }
-
 	};
 
 	Game.prototype.checkCollisions = function() {
 	  var platforms = this.platforms;
 	  for (var i = 0; i < platforms.length; i++) {
-	    if (this.kangaroo.isCollided(platforms[i]) ) {
-	      this.kangaroo.vel[1] = 10;
-	      this.kangaroo.jump();
+	    if (this.koala.isCollided(platforms[i]) ) {
+	      this.koala.vel[1] = 10;
+	      this.koala.jump();
 	    }
 	  }
 	};
@@ -200,10 +207,10 @@
 	Game.prototype.step = function() {
 	  if (this.started) {
 	    this.rerenderPlatforms();
-	    this.kangaroo.jump();
-	    this.kangaroo.vel[1] -= 0.3;
-	    if (this.kangaroo.vel[1] <= 0) {
-	      this.kangaroo.falling = true;
+	    this.koala.jump();
+	    this.koala.vel[1] -= 0.3;
+	    if (this.koala.vel[1] <= 0) {
+	      this.koala.falling = true;
 	    }
 	    this.checkCollisions();
 	    this.addPlatform();
@@ -224,7 +231,7 @@
 
 
 	Game.prototype.gameOverChecker = function() {
-	  if (this.kangaroo.y > this.DIM_Y + 5) {
+	  if (this.koala.y > this.DIM_Y + 5) {
 	    this.gameOver = true;
 	  }
 	};
@@ -259,7 +266,7 @@
 /* 2 */
 /***/ function(module, exports) {
 
-	var Kangaroo = function(args) {
+	var Koala = function(args) {
 	  this.x = args.x;
 	  this.y = args.y;
 	  this.vel = args.vel || [0, 10];
@@ -269,12 +276,12 @@
 	  this.falling = false;
 	};
 
-	Kangaroo.prototype.draw = function(ctx) {
+	Koala.prototype.draw = function(ctx) {
 	  var koala = document.getElementById("koala");
 	  ctx.drawImage(koala, this.x - 30, this.y -35);
 	};
 
-	Kangaroo.prototype.jump = function() {
+	Koala.prototype.jump = function() {
 	  this.falling = false;
 	  this.x += this.vel[0];
 	  this.y -= this.vel[1];
@@ -288,7 +295,7 @@
 	  //can alter y velocity for power ups later;
 	};
 
-	Kangaroo.prototype.move = function(direction) {
+	Koala.prototype.move = function(direction) {
 	  this.vel[0] = 0;
 	  if (direction === "left") {
 	    if ( this.vel[0] > -20 ){
@@ -307,7 +314,7 @@
 	  }
 	};
 
-	Kangaroo.prototype.isCollided = function(otherObject) {
+	Koala.prototype.isCollided = function(otherObject) {
 	  var dy = (this.y - this.radius);
 	  if ((dy <= otherObject.y + otherObject.height/2 + 10) &&
 	        (dy > otherObject.y - 10) &&
@@ -320,7 +327,7 @@
 	        }
 	};
 
-	module.exports = Kangaroo;
+	module.exports = Koala;
 
 
 /***/ },
@@ -371,9 +378,9 @@
 
 	var keyDownHandler = function(event) {
 	  if (event.keyCode === this.keys["LEFT"]) {
-	    this.game.kangaroo.move("left");
+	    this.game.koala.move("left");
 	  } else if (event.keyCode === this.keys["RIGHT"]) {
-	    this.game.kangaroo.move("right");
+	    this.game.koala.move("right");
 	  } else if (event.keyCode === this.keys["SPACE"]) {
 	    if (this.game.started === false) {
 	      this.game.started = true;
@@ -388,9 +395,9 @@
 
 	var keyUpHandler = function(event) {
 	  if (event.keyCode === this.keys["LEFT"]) {
-	    this.game.kangaroo.move("stop");
+	    this.game.koala.move("stop");
 	  } else if (event.keyCode === this.keys["RIGHT"]) {
-	    this.game.kangaroo.move("stop");
+	    this.game.koala.move("stop");
 	  }
 	};
 
