@@ -59,17 +59,18 @@ Game.prototype.endDraw = function(ctx) {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, this.DIM_X, this.DIM_Y);
   ctx.fillStyle = "white";
+  ctx.font = '50px "Coming Soon"';
+  ctx.fillText("Game Over", this.DIM_X / 2 - 125, this.DIM_Y / 2 - 90);
   ctx.font = '24px "Coming Soon"';
-  ctx.fillText("Game Over", this.DIM_X / 2 - 60, this.DIM_Y / 2 - 50);
   ctx.fillText(
-    "Your Score:" + Math.floor(this.gameScore / 50),
-    this.DIM_X / 2 - 60,
-    this.DIM_Y / 2 - 30
+    "Your Score:   " + Math.floor(this.gameScore / 50),
+    this.DIM_X / 2 - 90,
+    this.DIM_Y / 2
   );
   ctx.fillText(
     "Press space to play again",
-    this.DIM_X / 2 - 60,
-    this.DIM_Y / 2 - 10
+    this.DIM_X / 2 - 150,
+    this.DIM_Y / 2 + 80
   );
 };
 
