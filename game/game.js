@@ -22,7 +22,6 @@ Game.prototype.draw = function(ctx) {
     ctx.fillText("Score:", 15, 30);
     ctx.fillText(Math.floor(this.gameScore / 50), 93, 30);
     this.kangaroo.draw(ctx);
-
     var platforms = this.platforms;
     for (var i = 0; i < platforms.length; i++) {
       platforms[i].draw(ctx);
@@ -32,6 +31,26 @@ Game.prototype.draw = function(ctx) {
   } else {
     ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
     this.kangaroo.draw(ctx);
+    ctx.fillStyle = "black";
+    ctx.font = "50px arial";
+    ctx.fillText(
+      "KOALA JUMP",
+      this.DIM_X / 2 - 155,
+      this.DIM_Y / 2 - 170
+    );
+
+    ctx.font = "24px arial";
+    ctx.fillText(
+      "Press left and right arrow keys to move",
+      this.DIM_X / 2 - 205,
+      this.DIM_Y / 2 - 30
+    );
+
+    ctx.fillText(
+      "Press space bar to start",
+      this.DIM_X / 2 - 130,
+      this.DIM_Y / 2 + 40
+    );
   }
 };
 
@@ -73,7 +92,7 @@ Game.prototype.addPlatform = function() {
     if (platforms[i].y > this.DIM_Y) {
       this.platforms.splice(i, 1);
       this.platforms.push(
-        new Platform({x: randomInt(5, 460), y:randomInt(150, 250)})
+        new Platform({x: randomInt(5, 460), y:randomInt(100, 200)})
       );
     }
   }
@@ -91,16 +110,17 @@ Game.prototype.checkCollisions = function() {
 };
 
 Game.prototype.step = function() {
-  this.rerenderPlatforms();
-  this.kangaroo.jump();
-  this.kangaroo.vel[1] -= 0.3;
-  if (this.kangaroo.vel[1] <= 0) {
-    this.kangaroo.falling = true;
+  if (this.started) {
+    this.rerenderPlatforms();
+    this.kangaroo.jump();
+    this.kangaroo.vel[1] -= 0.3;
+    if (this.kangaroo.vel[1] <= 0) {
+      this.kangaroo.falling = true;
+    }
+    this.checkCollisions();
+    this.addPlatform();
+    this.gameOverChecker();
   }
-  this.checkCollisions();
-  this.addPlatform();
-  this.gameOverChecker();
-
 };
 
 function randomInt(min, max) {
@@ -108,21 +128,8 @@ function randomInt(min, max) {
 }
 
 Game.prototype.drawBoard = function(ctx) {
-  var canvasWidth = this.DIM_X;
-  var canvasHeight = this.DIM_Y;
-  var p = 10;
-  for (var i = 0; i < canvasWidth; i+=20) {
-    ctx.moveTo(0.5 + i +p, p);
-    ctx.lineTo(0.5 + i + p, p);
-  }
+  var instructions = document.getElementById("instructions");
 
-  for (var j = 0; j < canvasHeight; j+=20) {
-    ctx.moveTo(0.5 + j + p, p);
-    ctx.lineTo(0.5 + j + p, p);
-  }
-
-  ctx.strokeStyle = "black";
-  ctx.stroke();
 };
 
 
@@ -134,26 +141,25 @@ Game.prototype.gameOverChecker = function() {
 
 Game.prototype.initialize = function() {
   this.gameOver = false;
-  this.started = true;
-  this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(0, 100)})
-  );
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(-200, -100)})
-  );
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(100, 200)})
-  );
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(200, 300)})
-  );
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(300, 400)})
-  );
-  this.platforms.push(
-    new Platform({x: randomInt(5, 460), y:randomInt(100, 500)})
-  );
+    this.platforms.push(new Platform({x: this.DIM_X/2, y: 484}));
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(0, 100)})
+    );
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(-200, -100)})
+    );
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(100, 200)})
+    );
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(200, 300)})
+    );
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(300, 400)})
+    );
+    this.platforms.push(
+      new Platform({x: randomInt(5, 460), y:randomInt(100, 500)})
+    );
 };
 
 module.exports = Game;
