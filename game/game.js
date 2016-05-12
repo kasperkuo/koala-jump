@@ -62,12 +62,6 @@ Game.prototype.draw = function(ctx) {
     );
 
 
-    // ctx.fillText(
-    //   "Be careful of going into trees and slowing down!",
-    //   this.DIM_X / 2 - 230,
-    //   this.DIM_Y / 2 + 10
-    // );
-
     ctx.font = '24px "Coming Soon"';
     ctx.fillStyle = "black";
     ctx.fillText(
@@ -93,9 +87,12 @@ Game.prototype.endDraw = function(ctx) {
   );
   ctx.fillText(
     "Press space to play again",
-    this.DIM_X / 2 - 150,
+    this.DIM_X / 2 - 140,
     this.DIM_Y / 2 + 80
   );
+
+  var cryingKoala = document.getElementById("crying-koala");
+  ctx.drawImage(cryingKoala, this.DIM_X / 2, this.DIM_Y /2 + 150);
 };
 
 Game.prototype.rerenderPlatforms = function() {
