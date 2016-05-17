@@ -121,13 +121,6 @@
 	      this.DIM_Y / 2
 	    );
 
-	    ctx.fillText(
-	      "Koalas are lazy--if you slow down Mr. Koala will get stuck!",
-	      this.DIM_X / 2 - 190,
-	      this.DIM_Y / 2 + 74
-	    );
-
-
 	    ctx.font = '24px "Coming Soon"';
 	    ctx.fillStyle = "black";
 	    ctx.fillText(
