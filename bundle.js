@@ -121,14 +121,6 @@
 	      this.DIM_Y / 2
 	    );
 
-	    ctx.font = '14px "Coming Soon"';
-	    ctx.fillStyle = "red";
-	    ctx.fillText(
-	      "Be careful of going into trees as it can hinder your sight!",
-	      this.DIM_X / 2 - 190,
-	      this.DIM_Y / 2 + 50
-	    );
-
 	    ctx.fillText(
 	      "Koalas are lazy--if you slow down Mr. Koala will get stuck!",
 	      this.DIM_X / 2 - 190,
