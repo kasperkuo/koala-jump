@@ -172,10 +172,13 @@
 	Game.prototype.rerenderPlatforms = function() {
 	  var platforms = this.platforms;
 	  for (var i = 0; i < platforms.length; i++) {
-	    if (this.koala.y < this.DIM_Y/2) {
+	    if (this.koala.y < 271) {
 	      if (this.koala.vel[1] > 0) {
 	        platforms[i].y += this.koala.vel[1];
 	        this.gameScore += this.koala.vel[1];
+	        if (this.koala.falling === false) {
+	          this.koala.y = 270;
+	        }
 	      }
 	    }
 	  }
