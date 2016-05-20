@@ -18,16 +18,19 @@ This game was created with:
 
 Koala Jump is a platform jumper that requires infinite scrolling. Infinite scrolling is done by two major principles--moving platforms down and generating new platforms.
 
-To move platforms down, the `Game#rerenderPlatforms` function was used. To make smooth platform scrolling, the platforms move only when the koala moves past half of the screen, which contains dimensions `DIM_Y / 2`. `Game#rerenderPlatforms` acquires all platforms present on the screen and iterates through each one. Once it meets the conditional `this.koala.y < this.DIM_Y/2`, all platforms will move down as many pixels as the koala accelerates upwards. This is demonstrated in the code snippet below:
+To move platforms down, the `Game#rerenderPlatforms` function was used. To make smooth platform scrolling, the platforms move only when the koala moves past half of the screen, which is denoted by dimensions `DIM_Y / 2`. `Game#rerenderPlatforms` acquires all platforms present on the screen and iterates through each one. Once it meets the conditional `this.koala.y < this.DIM_Y/2`, all platforms will move down as many pixels as the koala accelerates upwards. This is demonstrated in the code snippet below:
 
 ```
 Game.prototype.rerenderPlatforms = function() {
   var platforms = this.platforms;
   for (var i = 0; i < platforms.length; i++) {
-    if (this.koala.y < this.DIM_Y/2) {
+    if (this.koala.y < 271) {
       if (this.koala.vel[1] > 0) {
         platforms[i].y += this.koala.vel[1];
         this.gameScore += this.koala.vel[1];
+        if (this.koala.falling === false) {
+          this.koala.y = 270;
+        }
       }
     }
   }
