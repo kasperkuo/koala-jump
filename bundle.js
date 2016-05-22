@@ -313,8 +313,8 @@
 
 	Koala.prototype.isCollided = function(otherObject) {
 	  var dy = (this.y - this.radius);
-	  if ((dy <= otherObject.y + otherObject.height/2 + 10) &&
-	        (dy > otherObject.y - 10) &&
+	  if ((dy <= otherObject.y + otherObject.height/2 - 10) &&
+	        (dy > otherObject.y - 20) &&
 	        (this.x > otherObject.x - this.radius) &&
 	          (this.x <= otherObject.x + otherObject.width + this.radius) &&
 	            this.falling === true ) {
