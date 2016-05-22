@@ -78,6 +78,7 @@
 	  this.canCollide = true;
 	  this.started = false;
 	  this.gameOver = false;
+	  this.initialized = true;
 	}
 
 	Game.prototype.draw = function(ctx) {
@@ -94,7 +95,14 @@
 	    this.drawBoard(ctx);
 	    ctx.fillText("Score:", 15, 30);
 	    ctx.fillText(Math.floor(this.gameScore / 25), 93, 30);
+	    if (this.gameOver) {
+	      this.endDraw(ctx);
+	    }
 
+	    if (this.initialized) {
+	      this.initialize();
+	      this.initialized = false;
+	    }
 	  } else {
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 	    this.koala.draw(ctx);
@@ -175,6 +183,7 @@
 	  for (var i = 0; i < platforms.length; i++) {
 	    if (platforms[i].y > this.DIM_Y) {
 	      this.platforms.splice(i, 1);
+
 	      this.platforms.push(
 	        new Platform({x: randomInt(5, 460), y:125})
 	      );
@@ -259,7 +268,6 @@
 	  this.y = args.y;
 	  this.vel = args.vel || [0, 10];
 	  this.radius = 10;
-	  this.dead = false;
 	  this.game = args.game;
 	  this.falling = false;
 	};
@@ -274,13 +282,11 @@
 	  this.x += this.vel[0];
 	  this.y -= this.vel[1];
 
-
 	  if (this.x >= 500) {
 	    this.x = 0;
 	  } else if (this.x < 0) {
 	    this.x = 500;
 	  }
-	  //can alter y velocity for power ups later;
 	};
 
 	Koala.prototype.move = function(direction) {
@@ -298,7 +304,6 @@
 	  } else {
 	    this.vel[0] = 0;
 	    this.x;
-
 	  }
 	};
 
@@ -360,7 +365,7 @@
 	  document.addEventListener("keydown", keyDownHandler.bind(this));
 	  document.addEventListener("keyup", keyUpHandler.bind(this));
 
-	  this.game.initialize();
+
 	  this.animate(this.animate.bind(this));
 	};
 
@@ -375,7 +380,6 @@
 	    } else {
 	      if (this.game.gameOver) {
 	        this.game = new Game();
-	        location.reload();
 	      }
 	    }
 	  }
@@ -390,16 +394,12 @@
 	};
 
 	GameView.prototype.animate = function(time) {
-	  if (this.game.gameOver) {
-	    this.game.endDraw(this.ctx);
-	  } else {
 	    var timeDelta = time - this.lastTime;
 	    this.game.step();
 	    this.game.draw(this.ctx);
 	    this.lastTime = time;
 
 	    requestAnimationFrame(this.animate.bind(this));
-	  }
 	};
 
 
