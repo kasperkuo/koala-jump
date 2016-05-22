@@ -86,7 +86,7 @@
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 	    ctx.fillStyle = "black";
 	    ctx.font = '24px "Coming Soon"';
-	    this.koala.draw(ctx);
+	    this.koala.drawAstronaut(ctx);
 	    var platforms = this.platforms;
 	    for (var i = 0; i < platforms.length; i++) {
 	      platforms[i].draw(ctx);
@@ -106,7 +106,7 @@
 	  } else {
 	    ctx.clearRect(0, 0, this.DIM_X, this.DIM_Y);
 	    this.koala.draw(ctx);
-	    ctx.fillStyle = "black";
+	    ctx.fillStyle = "white";
 	    ctx.font = '100px "Amatic SC"';
 	    ctx.fillText(
 	      "KOALA JUMP",
@@ -176,7 +176,6 @@
 	    }
 	  }
 	};
-
 
 	Game.prototype.addPlatform = function() {
 	  var platforms = this.platforms;
@@ -275,6 +274,11 @@
 	Koala.prototype.draw = function(ctx) {
 	  var koala = document.getElementById("koala");
 	  ctx.drawImage(koala, this.x - 30, this.y -35);
+	};
+
+	Koala.prototype.drawAstronaut = function(ctx) {
+	  var koalaAstronaut = document.getElementById("koala-astronaut");
+	  ctx.drawImage(koalaAstronaut, this.x - 30, this.y - 35);
 	};
 
 	Koala.prototype.jump = function() {
